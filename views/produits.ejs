@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ja3Bu9 Products</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert"><%- messages.success %></div>
+        <% } %>
+    
+        <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert"><%- messages.error %></div>
+        <% } %>
+        
+    <h1>Products :</h1>
+   
+
+
+        <table id="myTable" >  
+            <thead>  
+                <tr class="table100-head">  
+                    <th class="column">ID</th>  
+                    <th class="column">Nom du produit</th>  
+                    <th class="column">Quantité</th>  
+                    <th class="column">Prix</th>  
+                    <th class="column">Nom du fournisseur</th>  
+                    <th class="column">Categorie</th>  
+                    <th style="width: 50px;" class="column"></th>  
+                    <th style="width: 80px;" class="column"></th>  
+
+
+
+                </tr>  
+            </thead>  
+             <tbody>  
+             <% produits.forEach(function (prod) { %>
+                <tr>  
+                    <td class="column"><%= prod.id %> </td>  
+                    <td class="column"><%= prod.nom %></td>  
+                    <td class="column"><%= prod.quantite %></td>
+                    <td class="column"><%= prod.prix %></td>
+                    <td class="column"><%= prod.nomfour %></td>
+                    <td class="column"><%= prod.categorie %></td>
+                    <td><a href="/delete/<%= prod.id %>" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                    <td><a href="/updateproduct/<%= prod.id %> " class="btn btn-sm btn-success"> UPDATE</a> </td>
+
+                </tr>
+                                                   
+             <% }) %>
+             </tbody>
+        </table>  
+        <br><br>
+        <a type="button" href="/addprod"  class="btn btn-info">Add Products</a>
+       
+
+
+
+
+
+        
+
+
+</body>
+
+</html>

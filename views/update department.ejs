@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ja3Bu9 Add Categorie</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+
+    <link rel="stylesheet" href="../style.css">
+    <script src="script.js"></script>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <% if (messages.success) { %>
+    <div class="alert alert-success" role="alert"><%- messages.success %></div>
+    <% } %>
+
+    <% if (messages.error) { %>
+    <div class="alert alert-danger" role="alert"><%- messages.error %></div>
+    <% } %>
+    <h1>Add Categorie</h1>
+    <div class="form">
+
+        
+            <% test.forEach(function (produc) { %>
+                <form method="POST" action="/updatedepartment/<%= produc.id %>" class="form">
+                    <% }) %>
+            <div class="form-group">
+                <label>Nom du Categorie</label>
+                <input placeholder="Categorie" name="categorie" class="input" id="nom" type="text">
+            </div>
+                      
+            <input class="but" type="submit" value="submit">
+        </form>
+
+
+
+        <br> <br>
+    </div>
+
+
+
+
+
+
+</body>
+
+</html>

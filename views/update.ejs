@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversion De Devise</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="script.js"></script>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert"><%- messages.success %></div>
+        <% } %>
+    
+        <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert"><%- messages.error %></div>
+        <% } %>
+
+    <h1> Update quotes</h1>
+    <div class="form">
+        <% test.forEach(function (citation) { %>
+            
+        <form method="POST" action="/update/<%= citation.id %>" class="form">
+            <% }) %>
+            
+    
+        <div class="form-group">
+            <label>Citation</label>
+            <input placeholder="citation" name="citation" class="input" id="nom" type="text">
+        </div>
+
+        <div class="form-group">
+            <label>Auteur</label>
+            <input placeholder="auteur"  name="auteur" class="input" id="prenom" type="text">
+        </div>
+        <div class="form-group">
+            <label>Source</label>
+            <input placeholder="source" name="source" class="input" id="age" type="text">
+        </div>
+        
+
+        <input class="but" type="submit"  value="submit">
+    </form>
+
+    
+<br> <br>
+    </div>
+
+
+
+        
+
+
+</body>
+
+</html>
