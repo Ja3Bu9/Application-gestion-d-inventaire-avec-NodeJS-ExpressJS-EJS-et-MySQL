@@ -110,15 +110,13 @@ app.get('/addprod', function (req, rep) {
             obj = {
                 fournisseurs: result
             };
-            // rep.render('addprod', obj);
-            // console.log(obj)
+
             connection.query('SELECT categorie FROM rayon', function (err, result) {
                 if (err) {
                     throw err;
                 } else {
                     obj.rayons = result;
                     rep.render('addprod', obj);
-                    console.log(obj)
                 }
             });
         }
@@ -142,8 +140,8 @@ app.post('/addprod', function (req, res, next) {
 
     if (nom.length === 0 || quantite.length === 0 || prix.length === 0) {
         errors = true;
-        
-        req.flash('error', "Please enter citation , auteur and source");
+
+        req.flash('error', "Please enter Nom , Quantité and Price");
         res.redirect('/addprod');
 
     }
@@ -153,13 +151,19 @@ app.post('/addprod', function (req, res, next) {
 
         connection.query('SELECT id FROM fournisseur WHERE nomfour = ?', fournisseur, function (err, result) {
             if (err) {
-                throw err;
+                // throw err;
+
+                req.flash('error', "Please Add Fournisseur And Rayon First");
+               res.redirect('/');
+                
             } else {
 
                 fournisseur = result[0].id
                 connection.query('SELECT id FROM rayon WHERE categorie= ?', categorie, function (err, result) {
                     if (err) {
-                        throw err;
+                        // throw err;
+                        req.flash('error', "Please Add Fournisseur And Rayon First");
+                          res.redirect('/');
                     } else {
 
                         categorie = result[0].id
@@ -180,7 +184,7 @@ app.post('/addprod', function (req, res, next) {
 
                             } else {
 
-                                req.flash('success', 'Book successfully added');
+                                req.flash('success', 'Product successfully added');
                                 res.redirect('/');
                             }
                         })
@@ -198,14 +202,13 @@ app.post('/addfourn', function (req, res, next) {
     let nomfour = req.body.nomfour;
     let mail = req.body.mail;
     let tele = req.body.tele;
-   
+
     let errors = false;
 
     if (nomfour.length === 0 || mail.length === 0 || tele.length === 0) {
         errors = true;
-        console.log('prob')
 
-        req.flash('error', "Please enter citation , auteur and source");
+        req.flash('error', "Please enter Nom , Mail and Tele");
         res.render('addfourn');
 
     }
@@ -218,7 +221,7 @@ app.post('/addfourn', function (req, res, next) {
             nomfour: nomfour,
             mail: mail,
             tele: tele
-           
+
         }
         connection.query('INSERT INTO fournisseur SET ?', form_fourn, function (err, result) {
             if (err) {
@@ -228,7 +231,7 @@ app.post('/addfourn', function (req, res, next) {
 
             } else {
 
-                req.flash('success', 'Book successfully added');
+                req.flash('success', 'Fournisseur successfully added');
                 res.redirect('/addprod');
             }
         })
@@ -241,13 +244,12 @@ app.post('/addcat', function (req, res, next) {
 
     let id = null;
     let categorie = req.body.categorie;
-    
-   
+
+
     let errors = false;
 
-    if (categorie.length === 0 ) {
+    if (categorie.length === 0) {
         errors = true;
-        console.log('prob')
 
         req.flash('error', "Please enter Categorie");
         res.render('addcat');
@@ -260,8 +262,8 @@ app.post('/addcat', function (req, res, next) {
         var form_cat = {
             id: id,
             categorie: categorie
-            
-           
+
+
         }
         connection.query('INSERT INTO rayon SET ?', form_cat, function (err, result) {
             if (err) {
@@ -271,7 +273,7 @@ app.post('/addcat', function (req, res, next) {
 
             } else {
 
-                req.flash('success', 'Book successfully added');
+                req.flash('success', 'Category successfully added');
                 res.redirect('/addprod');
             }
         })
@@ -280,174 +282,186 @@ app.post('/addcat', function (req, res, next) {
 
 
 
-// app.get('/update/:id', function (req, rep, next) {
-//     let id = req.params.id
-
-//     connection.query("SELECT * FROM citation WHERE id = '" + id + "' ",(err,result) =>{
-//       if(!err){
-//         rep.render('update',{test : result})
-
-//       }
-//       else {
-//         rep.send(err)
-//       }
-// })
-// })
-
-
-// app.post('/update/:id', function(req,res){
-
-//     let id = req.params.id ;
-//     let text = req.body.citation;
-//     let auteur = req.body.auteur;
-//     let source = req.body.source;
-
-
-//     connection.query("UPDATE citation SET text = '" + text + "', source = '" + source + "' WHERE id = '" + id + "'",(err,result) =>{
-//       if(!err){
-//         connection.query("UPDATE auteur SET nom = '" + auteur + "' WHERE id = '" + id + "'",(err,result) =>{
-//           if(!err) {
-//             res.redirect("/quotes")
-//           } else {
-//             console.log(2)
-//           }
-
-//       })
-//     }
-//     else{
-//       console.log(1)
-
-//     }
-
-//   })
-
-//   })
-
-
-
-
-
-
-
-    app.get('/updateproduct/:id', function (req, rep, next) {
+app.get('/updateproduct/:id', function (req, rep, next) {
 
     let id = req.params.id
-  
-    connection.query("SELECT * FROM produit WHERE id = '" + id + "' ",(err,result) =>{
-      if(!err){
-          
-        rep.render('updateprod', {test : result })
-        
-  
-      }
-      else {
-        rep.send(err)
-        
-      }
+
+    connection.query("SELECT * FROM produit WHERE id = '" + id + "' ", (err, result) => {
+        if (!err) {
+
+            rep.render('updateprod', {
+                test: result
+            })
+
+
+        } else {
+            rep.send(err)
+
+        }
     })
-  
-  })
-  
-  app.post('/updateproduct/:id',(req,res)=>{
-  
-    let id = req.params.id ;
+
+})
+
+app.post('/updateproduct/:id', (req, res) => {
+
+    let id = req.params.id;
     let nom = req.body.nom;
     let quantite = req.body.quantite;
     let prix = req.body.prix;
-  
-  
-  
-    connection.query("UPDATE produit SET nom = '" + nom + "', quantite = '" + quantite + "', prix = '" + prix + "' WHERE id = '" + id + "'",(err,result) =>{
-      if(!err){
-        res.redirect("/")
+
+    let errors = false;
+
+
+    if (nom.length === 0 || quantite.length === 0 || prix.length === 0) {
+        errors = true;
+
+        req.flash('error', "Please enter Name , Quantité and Price");
+        res.redirect('/');
+
     }
-    else{
-      res.send(err)
-  
+
+
+    if (!errors) {
+
+        connection.query("UPDATE produit SET nom = '" + nom + "', quantite = '" + quantite + "', prix = '" + prix + "' WHERE id = '" + id + "'", (err, result) => {
+            if (!err) {
+                res.redirect("/")
+            } else {
+                res.send(err)
+
+            }
+
+        })
     }
-  
-  })
-  
-  })
-  
-  
-  
-  app.get('/updatedepartment/:id', function(req,res){
-  
+})
+
+
+
+app.get('/updatedepartment/:id', function (req, res) {
+
     let depId = req.params.id
-  
-    connection.query("SELECT * FROM rayon WHERE id = '" + depId + "' ",(err,result) =>{
-      if(!err){
-        res.render('update department.ejs',{test : result})
-  
-      }
-      else {
-        res.send(err)
-      }
+
+    connection.query("SELECT * FROM rayon WHERE id = '" + depId + "' ", (err, result) => {
+        if (!err) {
+            res.render('update department.ejs', {
+                test: result
+            })
+
+        } else {
+            res.send(err)
+        }
     })
-  
-  })
-  
-  app.post('/updatedepartment/:id',(req,res)=>{
-  
-    let id = req.params.id ;
+
+})
+
+app.post('/updatedepartment/:id', (req, res) => {
+
+    let id = req.params.id;
     let categorie = req.body.categorie;
-  
-  
-  
-    connection.query("UPDATE rayon SET categorie = '" + categorie + "' WHERE id = '" + id + "'",(err,result) =>{
-      if(!err){
-        res.redirect("/rayon")
+
+    let errors = false;
+
+    if (categorie.length === 0) {
+        errors = true;
+
+        req.flash('error', "Please enter Categorie Name");
+        res.redirect('/rayon');
+
     }
-    else{
-      res.send(err)
-  
+
+
+    if (!errors) {
+
+        connection.query("UPDATE rayon SET categorie = '" + categorie + "' WHERE id = '" + id + "'", (err, result) => {
+            if (!err) {
+                res.redirect("/rayon")
+            } else {
+                res.send(err)
+
+            }
+
+        })
     }
-  
-  })
-  
-  })
-  
-  
-  
-  app.get('/updatefourni/:id', function(req,res){
-  
+
+})
+
+
+
+app.get('/updatefourni/:id', function (req, res) {
+
     let fourId = req.params.id
-  
-    connection.query("SELECT * FROM fournisseur WHERE id = '" + fourId + "' ",(err,result) =>{
-      if(!err){
-        res.render('update fournisseur.ejs',{test : result})
-  
-      }
-      else {
-        res.send(err)
-      }
+
+    connection.query("SELECT * FROM fournisseur WHERE id = '" + fourId + "' ", (err, result) => {
+        if (!err) {
+            res.render('update fournisseur.ejs', {
+                test: result
+            })
+
+        } else {
+            res.send(err)
+        }
     })
-  
-  })
-  
-  app.post('/updatefourni/:id',(req,res)=>{
-  
-    let id = req.params.id ;
+
+})
+
+app.post('/updatefourni/:id', (req, res) => {
+
+    let id = req.params.id;
     let nomfour = req.body.nomfour;
     let mail = req.body.mail;
     let tele = req.body.tele;
-  
-  
-  
-    connection.query("UPDATE fournisseur SET nomfour = '" + nomfour + "', mail = '" + mail + "', tele = '" + tele + "' WHERE id = '" + id + "'",(err,result) =>{
-      if(!err){
-        res.redirect("/fournisseur")
+
+    let errors = false;
+
+    if (nomfour.length === 0 || mail.length === 0 || tele.length === 0) {
+        errors = true;
+
+        req.flash('error', "Please enter Nom , Mail and Tele");
+        res.redirect('/fournisseur');
+
     }
-    else{
-      res.send(err)
-  
+
+
+    if (!errors) {
+
+        connection.query("UPDATE fournisseur SET nomfour = '" + nomfour + "', mail = '" + mail + "', tele = '" + tele + "' WHERE id = '" + id + "'", (err, result) => {
+            if (!err) {
+                res.redirect("/fournisseur")
+            } else {
+                res.send(err)
+
+            }
+
+        })
     }
-  
-  })
-  
-  })
-  
+
+})
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////::
+
+app.get('/deletequantite/:id', function (req, rep, next) {
+
+    let id = req.params.id
+    connection.query("UPDATE produit SET quantite = quantite - 1 WHERE id = ?", id, (err, result) => {
+        if (!err) {
+
+            req.flash('success', 'Quantity Reduced Successfully')
+            rep.redirect('/')
+
+
+        } else {
+
+            rep.send(err)
+            req.flash('error', err)
+
+
+        }
+    })
+
+})
 
 
 
@@ -457,105 +471,6 @@ app.post('/addcat', function (req, res, next) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-// app.get('/update/:id', function (req, rep, next) {
-
-//         rep.render('update')
-
-
-// })
-
-// app.post('/update/:id', function(req, res, next) {
-
-//     let id = req.params.id;
-//     let text = req.body.citation;
-//     let auteur = req.body.auteur;
-//     let source = req.body.source;
-//     let errors = false;
-
-//     if(id.length === 0 ||text.length === 0 || auteur.length === 0 || source.length === 0) {
-//         errors = true;
-
-//         // set flash message
-//         req.flash('error', "Please enter name and author");
-//         // render to add.ejs with flash message
-//         res.render('update');
-//     }
-
-//     // if no error
-//     if( !errors ) {
-
-//         var form_data = {
-//                         id: id,
-//                         text: text,
-//                         source: source
-//                     }
-//         // update query
-//         connection.query('UPDATE citation SET ? WHERE id = ' + id, form_data, function(err, result) {
-//             //if(err) throw err
-//             if (err) {
-//                 // set flash message
-//                 req.flash('error', err)
-//                 // render to edit.ejs
-
-//             } else {
-//                 req.flash('success', 'Book successfully updated');
-//                 res.redirect('/quotes');
-//             }
-//         })
-//     }
-// })
-
-
-
-
-
-
-
-
-
-
-// app.post('/update', function (req, res, next) {
-//     let id = req.body.id;
-//     let text = req.body.citation;
-//     let auteur = req.body.auteur;
-//     let source = req.body.source;
-//     let errors = false;
-
-//     console.log(req.params.id)
-//     if (id.length === 0 ||text.length === 0 || auteur.length === 0 || source.length === 0) {
-//         errors = true;
-
-//         req.flash('error', "Please enter citation , auteur and source");
-//         res.render('update');
-//     }
-
-//     if (!errors) {
-//         var form_data = {
-//             id: id,
-//             text: text,
-//             source: source
-//         }
-
-//         connection.query('UPDATE citation SET ? WHERE id = ' + id, form_data, function (err, result) {
-//             if (err) {
-//                 req.flash('error', err)           
-//                 } else {
-//                 req.flash('success', 'Book successfully updated');
-//                 res.redirect('/quotes');
-//             }
-//         })
-//     }
-// })
 
 
 
@@ -568,7 +483,7 @@ app.get('/delete/(:id)', function (req, res, next) {
             req.flash('error', err)
             res.redirect('/')
         } else {
-            req.flash('success', 'Book successfully deleted! ID = ' + id)
+            req.flash('success', 'Product successfully deleted! ID = ' + id)
             res.redirect('/')
         }
     })
@@ -581,7 +496,7 @@ app.get('/delete/four/(:id)', function (req, res, next) {
             req.flash('error', 'Products exists in this department')
             res.redirect('/fournisseur')
         } else {
-            req.flash('success', 'Book successfully deleted! ID = ' + id)
+            req.flash('success', 'Fournisseur successfully deleted! ID = ' + id)
             res.redirect('/fournisseur')
         }
     })
@@ -594,38 +509,11 @@ app.get('/delete/cat/(:id)', function (req, res, next) {
             req.flash('error', 'Products exists in this department')
             res.redirect('/rayon')
         } else {
-            req.flash('success', 'Book successfully deleted! ID = ' + id)
+            req.flash('success', 'Category successfully deleted! ID = ' + id)
             res.redirect('/rayon')
         }
     })
 })
-
-
-
-
-
-
-
-
-
-// app.get('/delete/:id', function(req,res){
-//     let id = req.params.id
-
-//     connection.query('DELETE FROM citation WHERE id = "' + id + '"',(err,result) =>{
-//       if(!err){
-//         connection.query('DELETE FROM auteur WHERE id = "' + id + '"',(err,result) =>{
-//           if(!err)
-//             res.redirect('/quotes')
-//           else
-//             res.send(err)
-//         })
-//       } 
-//       else
-//       res.send(err)
-
-//     })
-
-//   } )
 
 
 

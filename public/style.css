@@ -42,8 +42,8 @@ label{
   outline: none;
 }
 .input:focus{
-  border: 4px solid #2E3D7A;
-  padding: 20px;
+  border: 1px solid #2E3D7A;
+  padding: 10px;
 }
 
 .form{

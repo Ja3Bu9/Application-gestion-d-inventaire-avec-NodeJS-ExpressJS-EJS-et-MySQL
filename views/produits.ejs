@@ -36,6 +36,8 @@
                     <th class="column">Categorie</th>  
                     <th style="width: 50px;" class="column"></th>  
                     <th style="width: 80px;" class="column"></th>  
+                    <th style="width: 80px;" class="column"></th>  
+
 
 
 
@@ -53,14 +55,20 @@
                     <td><a href="/delete/<%= prod.id %>" class="btn btn-sm btn-danger">Delete</a>
                     </td>
                     <td><a href="/updateproduct/<%= prod.id %> " class="btn btn-sm btn-success"> UPDATE</a> </td>
+                    <td><a href="/deletequantite/<%= prod.id %> " class="btn btn-sm btn-success"> -</a> </td>
 
+
+                    
                 </tr>
                                                    
              <% }) %>
              </tbody>
         </table>  
         <br><br>
-        <a type="button" href="/addprod"  class="btn btn-info">Add Products</a>
+        <a type="button" href="/addprod"  class="btn btn-success">Add Products</a>
+        <a style="margin-top: 10px;" type="button" href="/fournisseur"  class="btn btn-info">Fournisseurs</a>
+        <a style="margin-top: 10px;" type="button" href="/rayon"  class="btn btn-info">Categories</a>
+
        
 
 
